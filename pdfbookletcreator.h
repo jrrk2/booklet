@@ -23,6 +23,9 @@ public:
     ~QPDFBookletCreator();
     
     bool createBooklet(const QString &inputPath, const QString &outputPath, bool startFromBeginning = true);
+    bool create2UpLayout(const QString &inputPath, const QString &outputPath);
+    bool create2UpSheet(const QString &inputPath, const QString &outputPath, int leftPageNum, int rightPageNum);
+    bool createSequential2Up(const QString &inputPath, const QString &outputPath);
     void debugProcess(QProcess &process, const QString &command, const QStringList &args);
 
 signals:

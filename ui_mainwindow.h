@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.16
+** Created by: Qt User Interface Compiler version 6.9.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,7 +10,7 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-//#include <QtWidgets/QAction>
+#include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QFrame>
@@ -74,82 +74,82 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+            MainWindow->setObjectName("MainWindow");
         MainWindow->resize(640, 480);
         MainWindow->setMinimumSize(QSize(640, 480));
         actionOpen = new QAction(MainWindow);
-        actionOpen->setObjectName(QString::fromUtf8("actionOpen"));
+        actionOpen->setObjectName("actionOpen");
         actionSaveAs = new QAction(MainWindow);
-        actionSaveAs->setObjectName(QString::fromUtf8("actionSaveAs"));
+        actionSaveAs->setObjectName("actionSaveAs");
         actionExit = new QAction(MainWindow);
-        actionExit->setObjectName(QString::fromUtf8("actionExit"));
+        actionExit->setObjectName("actionExit");
         actionAbout = new QAction(MainWindow);
-        actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
+        actionAbout->setObjectName("actionAbout");
         centralWidget = new QWidget(MainWindow);
-        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
+        centralWidget->setObjectName("centralWidget");
         horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setObjectName("horizontalLayout");
         splitter = new QSplitter(centralWidget);
-        splitter->setObjectName(QString::fromUtf8("splitter"));
+        splitter->setObjectName("splitter");
         splitter->setOrientation(Qt::Horizontal);
         layoutWidget = new QWidget(splitter);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setObjectName("layoutWidget");
         controlsLayout = new QVBoxLayout(layoutWidget);
         controlsLayout->setSpacing(6);
         controlsLayout->setContentsMargins(11, 11, 11, 11);
-        controlsLayout->setObjectName(QString::fromUtf8("controlsLayout"));
+        controlsLayout->setObjectName("controlsLayout");
         controlsLayout->setContentsMargins(0, 0, 0, 0);
         groupBox = new QGroupBox(layoutWidget);
-        groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        groupBox->setObjectName("groupBox");
         verticalLayout_2 = new QVBoxLayout(groupBox);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setObjectName("verticalLayout_2");
         descriptionLabel = new QLabel(groupBox);
-        descriptionLabel->setObjectName(QString::fromUtf8("descriptionLabel"));
+        descriptionLabel->setObjectName("descriptionLabel");
         descriptionLabel->setWordWrap(true);
 
         verticalLayout_2->addWidget(descriptionLabel);
 
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setObjectName("gridLayout");
         inputLabel = new QLabel(groupBox);
-        inputLabel->setObjectName(QString::fromUtf8("inputLabel"));
+        inputLabel->setObjectName("inputLabel");
 
         gridLayout->addWidget(inputLabel, 0, 0, 1, 1);
 
         inputPathEdit = new QLineEdit(groupBox);
-        inputPathEdit->setObjectName(QString::fromUtf8("inputPathEdit"));
+        inputPathEdit->setObjectName("inputPathEdit");
         inputPathEdit->setReadOnly(true);
 
         gridLayout->addWidget(inputPathEdit, 0, 1, 1, 1);
 
         browseButton = new QPushButton(groupBox);
-        browseButton->setObjectName(QString::fromUtf8("browseButton"));
+        browseButton->setObjectName("browseButton");
 
         gridLayout->addWidget(browseButton, 0, 2, 1, 1);
 
         previewButton = new QPushButton(groupBox);
-        previewButton->setObjectName(QString::fromUtf8("previewButton"));
+        previewButton->setObjectName("previewButton");
         previewButton->setEnabled(false);
 
         gridLayout->addWidget(previewButton, 0, 3, 1, 1);
 
         outputLabel = new QLabel(groupBox);
-        outputLabel->setObjectName(QString::fromUtf8("outputLabel"));
+        outputLabel->setObjectName("outputLabel");
 
         gridLayout->addWidget(outputLabel, 1, 0, 1, 1);
 
         outputPathEdit = new QLineEdit(groupBox);
-        outputPathEdit->setObjectName(QString::fromUtf8("outputPathEdit"));
+        outputPathEdit->setObjectName("outputPathEdit");
 
         gridLayout->addWidget(outputPathEdit, 1, 1, 1, 1);
 
         outputBrowseButton = new QPushButton(groupBox);
-        outputBrowseButton->setObjectName(QString::fromUtf8("outputBrowseButton"));
+        outputBrowseButton->setObjectName("outputBrowseButton");
 
         gridLayout->addWidget(outputBrowseButton, 1, 2, 1, 1);
 
@@ -157,41 +157,40 @@ public:
         verticalLayout_2->addLayout(gridLayout);
 
         startFromBeginningCheckBox = new QCheckBox(groupBox);
-        startFromBeginningCheckBox->setObjectName(QString::fromUtf8("startFromBeginningCheckBox"));
+        startFromBeginningCheckBox->setObjectName("startFromBeginningCheckBox");
         startFromBeginningCheckBox->setChecked(true);
 
         verticalLayout_2->addWidget(startFromBeginningCheckBox);
 
         instructionsLabel = new QLabel(groupBox);
-        instructionsLabel->setObjectName(QString::fromUtf8("instructionsLabel"));
+        instructionsLabel->setObjectName("instructionsLabel");
         instructionsLabel->setWordWrap(true);
 
         verticalLayout_2->addWidget(instructionsLabel);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
         verticalLayout_2->addItem(verticalSpacer);
 
         createButtonLayout = new QHBoxLayout();
         createButtonLayout->setSpacing(6);
-        createButtonLayout->setObjectName(QString::fromUtf8("createButtonLayout"));
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        createButtonLayout->setObjectName("createButtonLayout");
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
         createButtonLayout->addItem(horizontalSpacer);
 
         createBookletButton = new QPushButton(groupBox);
-        createBookletButton->setObjectName(QString::fromUtf8("createBookletButton"));
+        createBookletButton->setObjectName("createBookletButton");
         createBookletButton->setEnabled(false);
         createBookletButton->setMinimumSize(QSize(150, 40));
         QFont font;
         font.setPointSize(12);
         font.setBold(true);
-        font.setWeight(QFont::Normal);
         createBookletButton->setFont(font);
 
         createButtonLayout->addWidget(createBookletButton);
 
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
         createButtonLayout->addItem(horizontalSpacer_2);
 
@@ -203,8 +202,8 @@ public:
 
         splitter->addWidget(layoutWidget);
         previewFrame = new QFrame(splitter);
-        previewFrame->setObjectName(QString::fromUtf8("previewFrame"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        previewFrame->setObjectName("previewFrame");
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
         sizePolicy.setHorizontalStretch(1);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(previewFrame->sizePolicy().hasHeightForWidth());
@@ -214,26 +213,25 @@ public:
         previewLayout = new QVBoxLayout(previewFrame);
         previewLayout->setSpacing(6);
         previewLayout->setContentsMargins(11, 11, 11, 11);
-        previewLayout->setObjectName(QString::fromUtf8("previewLayout"));
+        previewLayout->setObjectName("previewLayout");
         previewTitle = new QLabel(previewFrame);
-        previewTitle->setObjectName(QString::fromUtf8("previewTitle"));
+        previewTitle->setObjectName("previewTitle");
         QFont font1;
         font1.setBold(true);
-        font1.setWeight(QFont::Normal);
         previewTitle->setFont(font1);
         previewTitle->setAlignment(Qt::AlignCenter);
 
         previewLayout->addWidget(previewTitle);
 
         previewLabel = new QLabel(previewFrame);
-        previewLabel->setObjectName(QString::fromUtf8("previewLabel"));
+        previewLabel->setObjectName("previewLabel");
         previewLabel->setAlignment(Qt::AlignCenter);
 
         previewLayout->addWidget(previewLabel);
 
         previewImage = new QLabel(previewFrame);
-        previewImage->setObjectName(QString::fromUtf8("previewImage"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        previewImage->setObjectName("previewImage");
+        QSizePolicy sizePolicy1(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(previewImage->sizePolicy().hasHeightForWidth());
@@ -249,15 +247,15 @@ public:
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QString::fromUtf8("menuBar"));
+        menuBar->setObjectName("menuBar");
         menuBar->setGeometry(QRect(0, 0, 640, 21));
         menuFile = new QMenu(menuBar);
-        menuFile->setObjectName(QString::fromUtf8("menuFile"));
+        menuFile->setObjectName("menuFile");
         menuHelp = new QMenu(menuBar);
-        menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
+        menuHelp->setObjectName("menuHelp");
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
-        statusBar->setObjectName(QString::fromUtf8("statusBar"));
+        statusBar->setObjectName("statusBar");
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());

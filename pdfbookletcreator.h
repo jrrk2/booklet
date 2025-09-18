@@ -23,7 +23,8 @@ public:
     ~QPDFBookletCreator();
     
     bool createBooklet(const QString &inputPath, const QString &outputPath, bool startFromBeginning = true);
-    
+    void debugProcess(QProcess &process, const QString &command, const QStringList &args);
+
 signals:
     void progressChanged(int progress);
     void processingComplete(bool success, const QString &message);

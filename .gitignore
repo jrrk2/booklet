@@ -1,0 +1,7 @@
+*~
+*.pdf
+.DS_Store
+.qmake.stash
+.xcode/
+A6BookletMaker.xcodeproj/
+Debug/

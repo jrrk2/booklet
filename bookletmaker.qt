@@ -1,0 +1,57 @@
+# A6BookletMaker.pro
+
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = A6BookletMaker
+TEMPLATE = app
+
+# The following define makes your compiler emit warnings if you use
+# any feature of Qt which has been marked as deprecated
+DEFINES += QT_DEPRECATED_WARNINGS
+
+# You can also make your code fail to compile if you use deprecated APIs.
+# In order to do so, uncomment the following line.
+# DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+# Include paths for macOS
+macx {
+    # Get Homebrew prefix dynamically
+    HOMEBREW_PREFIX = $system(brew --prefix)
+    
+    # Add poppler include paths
+    INCLUDEPATH += ${HOMEBREW_PREFIX}/include
+    INCLUDEPATH += ${HOMEBREW_PREFIX}/include/poppler
+    INCLUDEPATH += ${HOMEBREW_PREFIX}/include/poppler/qt5
+    
+    # Add qpdf include path
+    INCLUDEPATH += ${HOMEBREW_PREFIX}/include
+    
+    # Add library paths
+    LIBS += -L${HOMEBREW_PREFIX}/lib -lpoppler-qt5 -lqpdf
+    
+    # Print paths for debugging
+    message("Homebrew prefix: ${HOMEBREW_PREFIX}")
+    message("Include paths: ${INCLUDEPATH}")
+}
+
+SOURCES += \
+    main.cpp \
+    mainwindow.cpp \
+    pdfbookletcreator.cpp
+
+HEADERS += \
+    mainwindow.h \
+    pdfbookletcreator.h
+
+FORMS += \
+    mainwindow.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+# Resources
+# Comment this out if you don't have the icon files
+# RESOURCES += resources.qrc

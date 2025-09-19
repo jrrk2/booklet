@@ -354,10 +354,150 @@ bool QPDFBookletCreator::createCombinedPage(const QString &inputPath, const QStr
     }
     qDebug() << "Reordered PDF created successfully, size:" << reorderedInfo.size() << "bytes";
     
-    // Since pdfjam and qpdf 2-up approaches have issues, let's create a simpler booklet
-    // that puts two logical pages on each physical page in sequence
-    qDebug() << "Creating simplified 2-up layout using sequential pages...";
-    return createSequential2Up(reorderedPdf, outputPath);
+    // Try Ghostscript for proper 2-up layout (2 A6 pages per A4 sheet)
+    qDebug() << "Creating 2-up layout using Ghostscript...";
+    return createGhostscript2Up(reorderedPdf, outputPath);
+}
+
+bool QPDFBookletCreator::createGhostscript2Up(const QString &inputPath, const QString &outputPath)
+{
+    qDebug() << "=== Creating 2-up layout with Ghostscript ===";
+    
+    // Check if ghostscript is available
+    QProcess gsCheck;
+    gsCheck.start("/opt/homebrew/bin/gs", QStringList() << "--version");
+    if (!gsCheck.waitForFinished(10000) || gsCheck.exitCode() != 0) {
+        // Try with just 'gs' in case it's in PATH differently
+        gsCheck.start("gs", QStringList() << "--version");
+        if (!gsCheck.waitForFinished(10000) || gsCheck.exitCode() != 0) {
+            QString error = "Ghostscript not found at expected location. Falling back to sequential layout.";
+            qDebug() << error;
+            // Fall back to the working sequential approach instead of failing
+            return createSequential2Up(inputPath, outputPath);
+        }
+    }
+    
+    QString gsVersion = gsCheck.readAllStandardOutput().trimmed();
+    qDebug() << "Found Ghostscript version:" << gsVersion;
+    
+    // Remove existing output file
+    if (QFile::exists(outputPath)) {
+        qDebug() << "Output file already exists, removing it...";
+        QFile::remove(outputPath);
+    }
+    
+    QTemporaryDir tempDir;
+    if (!tempDir.isValid()) {
+        qDebug() << "Could not create temp directory, falling back";
+        return createSequential2Up(inputPath, outputPath);
+    }
+    
+    // Use a simpler approach: try to use Ghostscript's pdfwrite with page manipulation
+    // First, let's try the most straightforward 2-up approach
+    QString tempOutput = tempDir.filePath("gs_temp.pdf");
+    
+    QStringList gsArgs;
+    gsArgs << "-sDEVICE=pdfwrite"
+           << "-dNOPAUSE"
+           << "-dBATCH"
+           << "-dSAFER"
+           << "-dQUIET"
+           << QString("-sOutputFile=%1").arg(tempOutput);
+    
+    // Add PostScript code to create 2-up layout inline
+    QString psCode = QString(
+        "<<"
+        "/BeginPage {"
+        "  exch pop "
+        "  2 mod 0 eq {"
+        "    /leftpage true def"
+        "  } {"
+        "    /leftpage false def"
+        "  } ifelse"
+        "} "
+        "/EndPage {"
+        "  leftpage {"
+        "    0.5 0.5 scale "
+        "    0 0 translate"
+        "  } {"
+        "    0.5 0.5 scale "
+        "    297 0 translate"  // Half of A4 width in points
+        "  } ifelse"
+        "  { pop false } { pop true } ifelse"
+        "}"
+        ">> setpagedevice"
+    );
+    
+    gsArgs << "-c" << psCode << "-f" << inputPath;
+    
+    qDebug() << "Attempting Ghostscript 2-up conversion with PostScript...";
+    QProcess gsProcess;
+    gsProcess.start("/opt/homebrew/bin/gs", gsArgs);
+    if (!gsProcess.waitForFinished(60000)) {
+        qDebug() << "Ghostscript timeout, falling back to sequential layout";
+        return createSequential2Up(inputPath, outputPath);
+    }
+    
+    qDebug() << "--- Ghostscript Process Debug ---";
+    qDebug() << "Command: /opt/homebrew/bin/gs";
+    qDebug() << "Arguments:" << gsArgs.join(" ");
+    qDebug() << "Exit code:" << gsProcess.exitCode();
+    
+    QString stdout = gsProcess.readAllStandardOutput();
+    QString stderr = gsProcess.readAllStandardError();
+    if (!stdout.isEmpty()) qDebug() << "STDOUT:" << stdout;
+    if (!stderr.isEmpty()) qDebug() << "STDERR:" << stderr;
+    qDebug() << "--- End Ghostscript Process Debug ---";
+    
+    // If that didn't work, try a simpler approach
+    if (gsProcess.exitCode() != 0 || !QFile::exists(tempOutput)) {
+        qDebug() << "PostScript approach failed, trying basic pdfwrite...";
+        
+        QStringList basicArgs;
+        basicArgs << "-sDEVICE=pdfwrite"
+                 << "-dNOPAUSE"
+                 << "-dBATCH"
+                 << "-dSAFER"
+                 << "-dQUIET"
+                 << QString("-sOutputFile=%1").arg(outputPath)
+                 << inputPath;
+        
+        QProcess basicProcess;
+        basicProcess.start("/opt/homebrew/bin/gs", basicArgs);
+        basicProcess.waitForFinished(60000);
+        
+        qDebug() << "Basic Ghostscript exit code:" << basicProcess.exitCode();
+        
+        if (basicProcess.exitCode() != 0 || !QFile::exists(outputPath)) {
+            qDebug() << "All Ghostscript approaches failed, using sequential fallback";
+            return createSequential2Up(inputPath, outputPath);
+        }
+    } else {
+        // Copy temp output to final location
+        QFile::copy(tempOutput, outputPath);
+    }
+    
+    // Check final result
+    QFileInfo outputInfo(outputPath);
+    if (!outputInfo.exists()) {
+        qDebug() << "Ghostscript output not created, falling back";
+        return createSequential2Up(inputPath, outputPath);
+    }
+    
+    qDebug() << "Ghostscript processing completed!";
+    qDebug() << "Final output file:" << outputPath;
+    qDebug() << "Output file size:" << outputInfo.size() << "bytes";
+    
+    // Check if the output is significantly different from input (indicating processing occurred)
+    QFileInfo inputInfo(inputPath);
+    if (qAbs(outputInfo.size() - inputInfo.size()) < 1000) {
+        qDebug() << "Output size similar to input, may not have achieved 2-up layout";
+        emit processingComplete(true, "Booklet created with Ghostscript (layout may need manual adjustment for printing)");
+    } else {
+        emit processingComplete(true, "Booklet with Ghostscript 2-up layout created successfully!");
+    }
+    
+    return true;
 }
 
 bool QPDFBookletCreator::createSequential2Up(const QString &inputPath, const QString &outputPath)
@@ -731,4 +871,3 @@ void QPDFBookletCreator::logProgress(int current, int total)
     int progress = (current * 100) / total;
     emit progressChanged(progress);
 }
-

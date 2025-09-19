@@ -27,6 +27,7 @@ public:
     bool create2UpSheet(const QString &inputPath, const QString &outputPath, int leftPageNum, int rightPageNum);
     bool createSequential2Up(const QString &inputPath, const QString &outputPath);
     bool createGhostscript2Up(const QString &inputPath, const QString &outputPath);
+    bool create4UpFor2Booklets(const QString &inputPath, const QString &outputPath);
     void debugProcess(QProcess &process, const QString &command, const QStringList &args);
 
 signals:
